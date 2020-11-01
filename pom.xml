@@ -20,5 +20,11 @@
 	</properties>
 
 
+	<modules>
+		<module>blog-admin-api</module>
+		<!--<module>blog-admin-frontend</module>-->
+		<module>blog-admin-backend</module>
+	</modules>
+
 
 </project>

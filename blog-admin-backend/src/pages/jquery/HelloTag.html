@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>jquery动态增减选项卡 - 站长素材</title>
+  <link href="../lib/jquery/jquery.contextMenu.min.css" rel="stylesheet">
+  <link href="../lib/layui/css/layui.css" rel="stylesheet">
+  <script src="../lib/jquery/jquery-3.4.1.js"></script>
+  <script src="../lib/jquery/jquery.contextMenu.min.js"></script>
+  <script src="../lib/layui/layui.js"></script>
+  <style type="text/css">
+    body {
+      font-family: Lucida Sans, Lucida Sans Unicode, Arial, Sans-Serif;
+      font-size: 13px;
+      margin: 0px auto;
+    }
+
+    .tabs-out{
+      display: flex;
+      margin-bottom: 5px;
+    }
+
+    .icon-navigation{
+      display: flex;
+      align-items: center;
+      margin: 0 5px;
+    }
+
+    #tabs {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      list-style: none;
+      overflow: hidden;
+      white-space:nowrap;
+    }
+
+    #tabs li {
+      /* float: left; */
+      display: inline-block;
+      padding: 5px;
+      background-color: #bbb;
+      margin-right: 5px;
+    }
+
+    #tabs li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    #tabs li.current {
+      background-color: #1E9FFF;
+    }
+
+    #tabs li.current a {
+      color: #000;
+      text-decoration: none;
+    }
+
+    #tabs li a.remove {
+      color: #f00;
+      margin-left: 10px;
+    }
+
+    #content {
+      background-color: #e1e1e1;
+    }
+
+    #content p {
+      margin: 0;
+      padding: 20px 20px 100px 20px;
+    }
+
+    #main {
+      width: 900px;
+      margin: 0px auto;
+      overflow: hidden;
+      background-color: #F6F6F6;
+      margin-top: 20px;
+      -moz-border-radius: 10px;
+      -webkit-border-radius: 10px;
+      padding: 30px;
+    }
+
+    #wrapper,
+    #doclist {
+      float: left;
+      margin: 0 20px 0 0;
+    }
+
+    #doclist {
+      width: 150px;
+      border-right: solid 1px #dcdcdc;
+    }
+
+    #doclist ul {
+      margin: 0;
+      list-style: none;
+    }
+
+    #doclist li {
+      margin: 10px 0;
+      padding: 0;
+    }
+
+    #documents {
+      margin: 0;
+      padding: 0;
+    }
+
+    #wrapper {
+      width: 700px;
+      margin-top: 20px;
+    }
+
+    #header {
+      background-color: #F6F6F6;
+      width: 900px;
+      margin: 0px auto;
+      margin-top: 20px;
+      -moz-border-radius: 10px;
+      -webkit-border-radius: 10px;
+      padding: 30px;
+      position: relative;
+    }
+
+    #header h2 {
+      font-size: 16px;
+      font-weight: normal;
+      margin: 0px;
+      padding: 0px;
+    }
+
+  </style>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#documents a").click(function () {
+        addTab($(this));
+      });
+
+      $('#tabs').on('click','a.tab' ,function () {
+        // Get the tab name
+        var contentname = $(this).attr("id") + "_content";
+
+        // hide all other tabs
+        $("#content p").hide();
+        $("#tabs li").removeClass("current");
+
+        // show current tab
+        $("#" + contentname).show();
+        $(this).parent().addClass("current");
+      });
+
+
+      $('#tabs').on('click', "a.remove", function () {
+        // Get the tab name
+        console.log(">>> 点击删除键...")
+        delTab($(this))
+      });
+       // 右键菜单实现
+      $.contextMenu({
+          selector: ".tab",
+          trigger: 'right',
+          autoHide: true,
+          items: {
+              "close_current": {
+                  name: "关闭当前",
+                  icon: "fa-close",
+                  callback: function(key, opt) {
+                      console.log("key",key , "opt",opt)
+                      opt.$trigger.parent().find("a.remove").trigger('click')
+                  }
+              },
+              "close_other": {
+                  name: "关闭其他",
+                  icon: "fa-window-close-o",
+                  callback: function(key, opt) {
+                     let nowTab = opt.$trigger.parent();
+                     $('#tabs').children().not('.current').not(":first").find('a.remove').trigger('click');
+                  }
+              },
+              "close_left": {
+                  name: "关闭左侧",
+                  icon: "fa-reply",
+                  callback: function(key, opt) {
+                     let nowTab = opt.$trigger.parent();
+                     let prevTab = nowTab.prev();
+                     if (prevTab.length !== 0){
+                        prevTab.find('a.remove').trigger('click');
+                     }
+                  }
+              },
+              "close_right": {
+                  name: "关闭右侧",
+                  icon: "fa-share",
+                  callback: function(key, opt) {
+                     let nowTab = opt.$trigger.parent();
+                     let nextTab = nowTab.next();
+                     if (nextTab.length !== 0){
+                        nextTab.find('a.remove').trigger('click');
+                     }
+                  }
+              },
+              "close_all": {
+                  name: "全部关闭",
+                  icon: "fa-window-close",
+                  callback: function(key, opt) {
+                    let nowTab = opt.$trigger.parent();
+                    $('#tabs').children().not(":first").find('a.remove').trigger('click');
+                  }
+              },
+              "step": "---------",
+              "full": {
+                  name: "全屏显示",
+                  icon: "fa-arrows-alt",
+                  callback: function(key, opt) {
+
+                  }
+              },
+              "refresh": {
+                  name: "刷新页面",
+                  icon: "fa-refresh",
+                  callback: function(key, opt) {
+    
+                  }
+              },
+              "open": {
+                  name: "新窗口打开",
+                  icon: "fa-link",
+                  callback: function(key, opt) {
+          
+                  }
+              },
+          }
+      })
+      });
+
+    function delTab(link){
+        let linkParent = link.parent();
+        console.log(">>> 删除标签 link",linkParent)
+
+        let tabid = linkParent.find(".tab").attr("id");
+
+        let contentId = tabid + "_content";
+        console.log("contentId",contentId)
+        $("#" + contentId).remove();
+        console.log('linkParent.next()',linkParent.next().length)
+        nextActiveLink = linkParent.next().length === 0 ?  linkParent.prev() : linkParent.next()  ; 
+        linkParent.remove();
+
+        // if there is no current tab and if there are still tabs left, show the first one
+        if ($("#tabs li.current").length == 0 && $("#tabs li").length > 0) {
+            // find the first tab    
+            // var firsttab = $("#tabs li:first-child");
+            nextActiveLink.addClass("current");
+
+            // get its link name and show related content
+            var nextActiveLinkTabId = nextActiveLink.find("a.tab").attr("id");
+            console.log('nextActiveLinkTabid',nextActiveLink)
+            $("#" + nextActiveLinkTabId + "_content").show();
+        }
+    }
+
+    // 新增标签
+    function addTab(link) {
+        console.log(">>> 新增标签，link",link)
+
+        // 把全部标签设置成不是当前的，隐藏内容
+        $("#tabs li").removeClass("current");
+        $("#content p").hide();
+        // If tab already exist in the list, return
+        if ($("#" + link.attr("rel")).length != 0){
+            console.log(">>> 已存在，不新增")
+            $("#" + link.attr("rel")).parent().addClass("current");
+            $("#" + link.attr("rel") + "_content").show();
+            return;
+        }
+    
+        // 新增标签
+        $("#tabs").append("<li class='current'><a class='tab' id='" +link.attr("rel") + "' href='#'>" + link.html() +"</a><a href='#' class='remove'>x</a></li>");
+        
+        // 新增标签内容
+        $("#content").append("<p id='" + link.attr("rel") + "_content'>" +link.attr("title") + "</p>");
+
+        // set the newly added tab as current
+        $("#" + link.attr("rel") + "_content").show();
+    }
+
+  </script>
+</head>
+
+<body>
+  <div id="main">
+    <div id="doclist">
+      <h2>Documents</h2>
+      <ul id="documents">
+        <li><a href="#" rel="Document1" title="This is the content of Document1">Document1</a></li>
+        <li><a href="#" rel="Document2" title="This is the content of Document2">Document2</a></li>
+        <li><a href="#" rel="Document3" title="This is the content of Document3">Document3</a></li>
+        <li><a href="#" rel="Document4" title="This is the content of Document4">Document4</a></li>
+        <li><a href="#" rel="Document5" title="This is the content of Document5">Document5</a></li>
+        <li><a href="#" rel="Document6" title="This is the content of Document6">Document6</a></li>
+        <li><a href="#" rel="Document7" title="This is the content of Document7">Document7</a></li>
+        <li><a href="#" rel="Document8" title="This is the content of Document8">Document8</a></li>
+        <li><a href="#" rel="Document9" title="This is the content of Document9">Document9</a></li>
+      </ul>
+    </div>
+    <div id="wrapper">
+      <div class="tabs-out">
+          <i class="layui-icon layui-icon-prev icon-navigation"></i>
+          <ul id="tabs">
+              <!-- Tabs go here -->
+              <li class='current'><a class='tab' id='home' href='#'>home</a><a href='#' class='remove'>x</a></li>
+            </ul>
+           <i class="layui-icon layui-icon-next icon-navigation"></i>
+      </div>
+
+      <div id="content">
+        <!-- Tab content goes here -->
+        <p id='home_content'>首页</p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
