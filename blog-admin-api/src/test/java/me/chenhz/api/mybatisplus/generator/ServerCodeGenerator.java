@@ -13,6 +13,6 @@ public class ServerCodeGenerator extends CodeGenerator{
 
     public static void main(String[] args) {
         ServerCodeGenerator serverCodeGenerator = new ServerCodeGenerator(Application.ADMIN);
-        serverCodeGenerator.generateByTables("sys_file");
+        serverCodeGenerator.generateByTables("sys_user");
     }
 }
