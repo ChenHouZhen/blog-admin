@@ -58,7 +58,8 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>run build</arguments>
+                          <!-- 这里改为前端 打包的命令-->
+                            <arguments>run build:prod</arguments>
                         </configuration>
                     </execution>
                 </executions>

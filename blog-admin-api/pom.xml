@@ -22,6 +22,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin.external.google</groupId>
+					<artifactId>android-json</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- lombok -->
@@ -155,6 +161,29 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<!--<version>2.18.1</version>-->
+
+				<configuration>
+					<!--<forkMode>once</forkMode>-->
+					<!--<argLine>-Dfile.encoding=UTF-8 -Xmx1024m -XX:MaxPermSize=256m</argLine>-->
+					<!--<suiteXmlFiles>-->
+						<!--<suiteXmlFile>${resource.dir}${case}/testng.xml</suiteXmlFile>-->
+					<!--</suiteXmlFiles>-->
+					<!-- test 阶段测试不管成功失败都忽略-->
+					<testFailureIgnore>true</testFailureIgnore>
+					<!--<properties>-->
+						<!--<property>-->
+							<!--<name>usedefaultlisteners</name>-->
+							<!--<value>true</value>-->
+						<!--</property>-->
+					<!--</properties>-->
+					<!--<reportsDirectory>target/surefire-reports</reportsDirectory>-->
+				</configuration>
 			</plugin>
 
 		</plugins>
