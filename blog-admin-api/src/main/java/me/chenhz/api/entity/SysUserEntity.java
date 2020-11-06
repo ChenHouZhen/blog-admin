@@ -26,7 +26,7 @@ public class SysUserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "user_id", type = IdType.AUTO)
-    private Integer userId;
+    private Long userId;
 
     /**
      * 用户名
@@ -56,7 +56,7 @@ public class SysUserEntity implements Serializable {
     /**
      * 状态  0：禁用   1：正常
      */
-    private Boolean status;
+    private Integer status;
 
     /**
      * 部门ID

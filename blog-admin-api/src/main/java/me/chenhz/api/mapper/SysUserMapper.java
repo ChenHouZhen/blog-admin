@@ -2,6 +2,7 @@ package me.chenhz.api.mapper;
 
 import me.chenhz.api.entity.SysUserEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
