@@ -12,7 +12,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- *  http://localhost:8086/swagger-ui.html#/
+ *  http://localhost:8086/api/swagger-ui.html#/
  */
 
 @Configuration
@@ -36,7 +36,7 @@ public class SwaggerConfig {
                 .title("日 志 项目")
                 .description("日志")
                 .version("1.0.0")
-                .termsOfServiceUrl("http://xxx.xxx.com")
+                .termsOfServiceUrl("http://localhost:9528")
                 //.license("LICENSE")
                 .licenseUrl("http://xxx.xxx.com")
                 .build();

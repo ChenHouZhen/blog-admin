@@ -3,12 +3,17 @@ package me.chenhz.api.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.chenhz.api.dto.R;
+import me.chenhz.api.form.LoginForm;
 import me.chenhz.api.shiro.ShiroUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author CHZ
@@ -24,7 +29,7 @@ public class SysLoginController {
      */
     @RequestMapping(value = "/sys/login", method = RequestMethod.POST)
     @ApiOperation(value = "登录")
-    public R login(String username, String password, String captcha) {
+    public R login(@RequestBody LoginForm form) {
 //        String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
 //        if(!captcha.equalsIgnoreCase(kaptcha)){
 //            return R.error("验证码不正确");
@@ -32,7 +37,7 @@ public class SysLoginController {
 
         try{
             Subject subject = ShiroUtils.getSubject();
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            UsernamePasswordToken token = new UsernamePasswordToken(form.getUserName(), form.getPassword());
             subject.login(token);
         }catch (UnknownAccountException e) {
             return R.error(e.getMessage());
@@ -44,7 +49,10 @@ public class SysLoginController {
             return R.error("账户验证失败");
         }
 
-        return R.ok();
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", ShiroUtils.getSubject().getSession().getId());
+
+        return R.ok().put("data",map);
     }
 
     /**

@@ -18,13 +18,13 @@ public abstract class CodeGenerator {
 
     public abstract Application getApp();
 
-    private static final String dbUrl ="jdbc:mysql://localhost:3306/robot?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=GMT%2B8";
+    private static final String dbUrl ="jdbc:mysql://localhost:3306/robot?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true";
 
     private static final String userName ="root";
 
     private static final String password ="123456";
 
-    private static final String driverName ="com.mysql.cj.jdbc.Driver";
+    private static final String driverName ="com.mysql.jdbc.Driver";
 
     private Application app;
     // 模块路径前缀

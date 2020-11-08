@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@Component
+//@Component
 public class UserRealm extends AuthorizingRealm {
     @Autowired
     private SysUserMapper sysUserMapper;
