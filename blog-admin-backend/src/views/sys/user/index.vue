@@ -57,10 +57,10 @@
           {{ scope.row.mobile }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="状态" min-width="110" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
+      <el-table-column class-name="status-col" label="状态" min-width="110" align="center"  :formatter = "statusName">
+        <!-- <template slot-scope="scope">
+          <el-tag :type="scope.row.status | statusFilter" > {{ scope.row.status }}</el-tag>
+        </template> -->
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="创建时间" min-width="200">
         <template slot-scope="scope">
@@ -69,7 +69,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Actions" align="center" min-width="230" class-name="small-padding fixed-width">
+      <el-table-column label="Actions" align="left" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
@@ -80,7 +80,7 @@
           <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
             Draft
           </el-button> -->
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
+          <el-button :disabled="row.status=='0'" size="mini" type="danger" @click="handleDelete(row,$index)">
             Forbid
           </el-button>
         </template>
@@ -152,7 +152,8 @@ export default {
         1: 'danger'
       }
       return statusMap[status]
-    }
+    },
+
   },
   data() {
     return {
@@ -163,11 +164,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        username:undefined,
-        // importance: undefined,
-        // title: undefined,
-        // type: undefined,
-        // sort: '+id'
+        username:undefined
       },
       temp: {
         id: undefined,
@@ -183,7 +180,7 @@ export default {
         create: 'Create'
       },
      rules: {
-        username: [{ type: 'date', required: true, message: 'username is required', trigger: 'change' }],
+        username: [{ required: true, message: 'username is required', trigger: 'blur' }],
         password: [{ required: true, message: 'password is required', trigger: 'blur' }]
       },
     }
@@ -206,6 +203,15 @@ export default {
         }, 1.5 * 1000)
 
       })
+    },
+
+    statusName(row, column){
+        console.log("1111111",row)
+        const statusMap = {
+            0: '正常',
+            1: '禁用'
+        }
+        return statusMap[row.status]
     },
 
     handleFilter() {
@@ -244,6 +250,7 @@ export default {
               type: 'success',
               duration: 2000
             })
+
             this.getList()
           })
         }
@@ -271,8 +278,9 @@ export default {
               type: 'success',
               duration: 2000
             })
+
+            this.getList()
           })
-          this.getList()
         }
       })
     },
@@ -289,8 +297,9 @@ export default {
                 type: 'success',
                 duration: 2000
             })
+
+            this.getList()
         })
-        this.getList()
     },
 
 
