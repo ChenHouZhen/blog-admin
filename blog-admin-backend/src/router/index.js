@@ -89,6 +89,20 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/sys',
+    component: Layout,
+    name: '系统管理', 
+    meta: { title: '系统管理', icon: 'el-icon-s-help' },
+    children:[
+      {
+        path: 'user',
+        name: '用户管理',
+        component: () => import('@/views/sys/user/index'),
+        meta: { title: '用户管理', icon: 'table' }
+      },
+    ]
+  },
 
   {
     path: '/nested',

@@ -38,7 +38,7 @@ public class JwtAuthFilter extends AuthenticatingFilter {
     public JwtAuthFilter(SysUserService userService, String profile){
         this.userService = userService;
         this.profile = profile;
-        this.setLoginUrl("/login");
+        this.setLoginUrl("/index.html");
     }
 
     @Override
@@ -128,9 +128,6 @@ public class JwtAuthFilter extends AuthenticatingFilter {
 
     protected String getAuthzHeader(ServletRequest request) {
         HttpServletRequest httpRequest = WebUtils.toHttp(request);
-        // todo :改为从 cookie 读
-//        httpRequest.getCookies()
-
         String header = httpRequest.getHeader("x-auth-token");
         return StringUtils.removeStart(header, "Bearer ");
     }
@@ -140,9 +137,10 @@ public class JwtAuthFilter extends AuthenticatingFilter {
         return LocalDateTime.now().minusSeconds(tokenRefreshInterval).isAfter(issueTime);
     }
 
+    // 配置跨域
     protected void fillCorsHeader(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
-        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,HEAD");
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS,HEAD");
         httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
     }
 }

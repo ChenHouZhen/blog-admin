@@ -158,7 +158,7 @@ public class ShiroConfig {
         Map<String, Filter> filterMap = factoryBean.getFilters();
 
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
-        shiroFilter.setLoginUrl("/login.html");
+        shiroFilter.setLoginUrl("/index.html");
         shiroFilter.setUnauthorizedUrl("/");
         filterMap.put("authcToken", createAuthFilter(userService));
         filterMap.put("anyRole", createRolesFilter());
@@ -186,6 +186,8 @@ public class ShiroConfig {
         chainDefinition.addPathDefinition("/webjars/**", "anon");
         chainDefinition.addPathDefinition("/swagger-resources/**", "anon");
         chainDefinition.addPathDefinition("/statics/**", "anon");
+        chainDefinition.addPathDefinition("/static/**", "anon");
+        chainDefinition.addPathDefinition("/public/**", "anon");
         chainDefinition.addPathDefinition("/login.html", "anon");
         chainDefinition.addPathDefinition("/sys/login", "anon");
         chainDefinition.addPathDefinition("/favicon.ico", "anon");
